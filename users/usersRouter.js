@@ -26,19 +26,6 @@ router.get('/:id', (req, res) => {
   })
 });//end router get byid
 
-//add a new user
-router.post('/', (req, res) => {
-  const userInfo= req.body;
-  console.log('userInfo:', userInfo)
-  users.add(userInfo)
-  .then(user => {
-    res.status(201).json(user);
-  })
-  .catch(error => {
-    res.status(500).json({error: "Could not process your request"});
-  })
-});//end router post new user
-
 //delete a user
 router.delete('/:id', (req, res) => {
   const delId= parseInt(req.params.id);

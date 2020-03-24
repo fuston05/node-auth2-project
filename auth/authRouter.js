@@ -1,6 +1,8 @@
 const express= require('express');
 const router= express.Router();
 const bcrypt= require('bcrypt');
+const jwt= require('jsonwebtoken');
+const {jwtSec}= require('../sec/sec');
 
 const users= require('../users/user_model');
 
@@ -25,8 +27,8 @@ router.post('/register', (req, res) => {
   })
 });//end register
 
-router.post('login', (req, res) => {
-  const {username, password}= req.body.username;
+router.post('/login', (req, res) => {
+  const {username, password}= req.body;
   users.findBy({username})
   .first()
   .then( user => {
@@ -42,13 +44,22 @@ router.post('login', (req, res) => {
     }//end if
   })
   .catch(error => {
+    console.log('error:', error)
     res.status(500).json({error: "Could not process your request"})
   })
 
 })//end login
 
 function generateToken(user){
+  const payload= {
+    subject: user.id,
+    username: user.username
+  };
+  const options= {
+    expiresIn: '1h'
+  };
 
+  return jwt.sign(payload, jwtSec, options);
 }//end generateToken
 
 
