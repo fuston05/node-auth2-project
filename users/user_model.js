@@ -1,40 +1,39 @@
-const db= require('../database/db_config');
+const db = require('../database/db_config');
 
-module.exports= {
+module.exports = {
   getAll,
-  findBy, 
+  findBy,
   findById,
   add,
   remove
 }
 
-function getAll(){
+function getAll() {
   return db('users').select('id', 'username', 'department');
 }//end find
 
-function findBy(filter){
+function findBy(filter) {
   return db('users').where(filter);
 }//end findBy
 
-function findById(id){
+function findById(id) {
   return db('users')
-    .where({id})
+    .where({ id })
     .select('id', 'username', 'department')
     .first();
 }//end findById
 
-async function add(user){
-  const [id]= await db('users')
-  .insert(user, 'id');
+async function add(user) {
+  const [id] = await db('users')
+    .insert(user, 'id');
   return findById(id);
 }//end add
 
-async function remove(id){
-  const delUser= await findById(id).select('username');
+async function remove(id) {
+  const delUser = await findById(id).select('username');
   return db('users')
-  .select('username')
-  .where({id})
-  .del(id)
-  .then(res => {return delUser})
-
+    .select('username')
+    .where({ id })
+    .del(id)
+    .then(res => { return delUser });
 }//end delete
