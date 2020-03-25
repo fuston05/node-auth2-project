@@ -5,8 +5,10 @@ const users = require('./user_model');
 
 //get all users
 router.get('/', (req, res) => {
-  users.getAll()
+  const dept= req.decodedToken.department;
+  users.getAll(dept)
     .then(users => {
+      console.log('users: ', users);
       res.status(200).json(users);
     })
     .catch(error => {

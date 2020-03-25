@@ -8,8 +8,10 @@ module.exports = {
   remove
 }
 
-function getAll() {
-  return db('users').select('id', 'username', 'department');
+function getAll(dept) {
+  return db('users')
+  .select('id', 'username', 'department')
+  .where({'department': dept})
 }//end find
 
 function findBy(filter) {

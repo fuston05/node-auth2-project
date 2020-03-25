@@ -3,6 +3,7 @@ const server = express();
 const cors = require('cors');
 const helmet = require('helmet');
 const restricted = require('../auth/restricted_middleware');
+const checkRole = require('../auth/check_role');
 
 //middleware
 server.use(cors());
@@ -15,7 +16,7 @@ const authRouter = require('../auth/authRouter');
 
 //assign routers
 server.use('/api/auth', authRouter);
-server.use('/api/users', restricted, usersRouter);
+server.use('/api/users', restricted, checkRole('user'), usersRouter);
 
 //root route
 server.get('/', (req, res) => {
